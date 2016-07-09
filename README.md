@@ -24,7 +24,7 @@ setInterval(() => {
   //Do something here
 }, toTime('12h').ms());
 
-//Instead of using 5400 milliseconds (equivalent to 1.5 hour)
+//Instead of using 5400000 milliseconds (equivalent to 1.5 hour)
 setTimeout(() => {
   //Do something here
 }, toTime.addHours(1.5).ms());
