@@ -11,7 +11,8 @@
   },
   "author": "Matan Hafuta",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
+    "istanbul": "^0.4.4",
     "chai": "^3.5.0",
     "mocha": "^2.5.3"
   }
