@@ -17,6 +17,19 @@ toTime('1 Year 365 Days 4 Hours').hours(); //17524
 toTime('1y 365d 4h').hours(); //17524
 ```
 
+Useful for usage in methods such as setInterval and setTimeout which consume the intervals in milliseconds
+```javascript
+//Instead of using 43200000 milliseconds (equivalent to 12 hours) we can do the following
+setInterval(() => {
+  //Do something here
+}, toTime('12h').ms());
+
+//Instead of using 5400 milliseconds (equivalent to 1.5 hour)
+setTimeout(() => {
+  //Do something here
+}, toTime.addHours(1.5).ms());
+```
+
 ###### Allowed suffixes (all case insensetive)
 
 * Year, Years, Y
