@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/hafuta/to-time.svg?branch=master)](https://travis-ci.org/hafuta/to-time)
+
 # to-time
 Utility for converting textual time periods to time units
 
