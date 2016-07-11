@@ -68,12 +68,26 @@ toTime.fromYears(4).addWeeks(4).days(); //1488
 * years : Number
 * humanize : String
 
+#### Developing
+
+##### Running tests
+
+* Make sure to write tests, run new & existing tests using:
+  ```shell
+  npm run test
+  ```
+  
+* Check for source code & tests code styling by running eslint:
+  ```shell
+  npm run lint
+  ```
+
+* If tests are passing and eslint doesn't return any error -> Create pull request
 
 #### To Do
 - [ ]  Add support for decimal numbers in textual representation
 - [ ]  Add Karma for testing in browser environment (Currently testing server side using Mocha)
 - [ ]  Add more tests
 - [ ]  Improve documentation
-- [ ]  Integrate with Travis
 
 
