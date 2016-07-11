@@ -105,7 +105,6 @@ describe('Invoking toTime', () => {
 
     });
 
-
     describe('Should equal - simple values - hours', () => {
 
         const SIMPLE = [{
@@ -126,7 +125,6 @@ describe('Invoking toTime', () => {
         });
 
     });
-
 
     describe('Should equal - simple values - days', () => {
 

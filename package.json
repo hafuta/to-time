@@ -8,7 +8,10 @@
   },
   "scripts": {
     "test": "mocha ./test",
-    "istanbul": "./node_modules/.bin/istanbul cover _mocha"
+    "istanbul": "./node_modules/.bin/istanbul cover _mocha",
+    "lint": "npm run lint-lib && npm run lint-server-test",
+    "lint-lib": "eslint -c .eslintrc.json --ignore-path ./.eslintignore .",
+    "lint-server-test": "eslint -c ./test/.eslintrc.json --ignore-path ./test/.eslintignore ./test"
   },
   "author": "Matan Hafuta",
   "license": "MIT",
