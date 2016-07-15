@@ -19,5 +19,9 @@
     "istanbul": "^0.4.4",
     "chai": "^3.5.0",
     "mocha": "^2.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hafuta/to-time.git"
   }
 }
