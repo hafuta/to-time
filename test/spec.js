@@ -214,8 +214,16 @@ describe('Invoking toTime', () => {
     });
 
     describe('humanize', () => {
-        it('Should transform object into human readable stirng', () => {
+        it('50 hours should equal to `2 Days, 2 Hours`', () => {
             expect(toTime.fromHours(50).humanize()).to.equal('2 Days, 2 Hours');
+        });
+
+        it('24 hours should equal 1 day', () => {
+            expect(toTime.fromHours(24).humanize()).to.equal('1 Days');
+        });
+
+        it('366 days and 2 hour should equal `1 Years, 1 Days, 2 Hours', () => {
+            expect(toTime.fromDays(366).addHours(2).humanize()).to.equal('1 Years, 1 Days, 2 Hours');
         });
 
         it('humanize() and toString() should return the same output', () => {
