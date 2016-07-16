@@ -1,6 +1,6 @@
 {
   "name": "to-time",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Utility for converting textual time periods to time units",
   "main": "lib/index.js",
   "directories": {
