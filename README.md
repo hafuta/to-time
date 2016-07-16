@@ -1,13 +1,30 @@
-[![Build Status](https://travis-ci.org/hafuta/to-time.svg?branch=master)](https://travis-ci.org/hafuta/to-time)
-
 # to-time
+[![Build Status](https://travis-ci.org/hafuta/to-time.svg?branch=master)](https://travis-ci.org/hafuta/to-time) [![npm version](https://badge.fury.io/js/to-time.svg)](https://badge.fury.io/js/to-time)
+
 Utility for converting textual time periods to time units
 
 In development
 
 
+## Install
+
+First install the package and save it to package.json using npm:
+```sh
+npm install --save to-time
+```
+
+To require in the browser:
+```html
+<script src="node_modules/to-time/lib/to-time.min.js"></script>
+```
+
+To require when using NodeJS:
+```node
+const toTime = require('to-time');
+```
+
 ## Usage
-###### Converting from textual time period to time units
+Converting from textual time period to time units
 
 ```javascript
 toTime('1 hour').seconds(); //3600
@@ -32,7 +49,7 @@ setTimeout(() => {
 }, toTime.addHours(1.5).ms());
 ```
 
-###### Allowed suffixes (all case insensetive)
+##### Allowed suffixes (all case insensetive)
 
 * Year, Years, Y
 * Week, Weeks, W
@@ -43,13 +60,13 @@ setTimeout(() => {
 * Millisecond, Milliseconds, MS
 
 
-###### Initializing using factory methods
+##### Initializing using factory methods
 ```javascript
 toTime.fromHours(4).addMinutes(30).hours(); //4.5
 toTime.fromYears(4).addWeeks(4).days(); //1488
 ```
 
-###### Appenders methods
+##### Appenders methods
 * addMilliseconds
 * addSeconds
 * addMinutes
@@ -58,7 +75,7 @@ toTime.fromYears(4).addWeeks(4).days(); //1488
 * addWeeks
 * addYears
 
-###### Getters methods
+##### Getters methods
 * milliseconds : Number
 * ms (alias to milliseconds)
 * minutes : Number
@@ -85,10 +102,7 @@ toTime.fromYears(4).addWeeks(4).days(); //1488
 * If tests are passing and eslint doesn't return any error -> Create pull request
 
 ## To Do
-- [ ]  Add support for decimal numbers in textual representation
 - [ ]  Add Karma for testing in browser environment (Currently testing server side using Mocha)
-- [ ]  Add more tests
-- [ ]  Improve documentation
 
 
 ## License
