@@ -6,7 +6,7 @@ Utility for converting textual time periods to time units
 In development
 
 
-#### Usage
+## Usage
 ###### Converting from textual time period to time units
 
 ```javascript
@@ -68,7 +68,7 @@ toTime.fromYears(4).addWeeks(4).days(); //1488
 * years : Number
 * humanize : String
 
-#### Developing
+## Contributing
 
 ##### Running tests
 
