@@ -13,22 +13,6 @@ const transforms = [
     ['Milliseconds', constants.SECONDS_IN_MILLISECOND]
 ];
 
-/**
- * Function to compute modulo value
- * JS doesn't have a modulo operator built into the language
- * Code taken from this StackOverflow post:
- * http://stackoverflow.com/questions/3966484/floating-point-numbers-and-javascript-modulus-operator
- */
-function floatSafeRemainder(val, step) {
-    const valDecCount = (val.toString().split('.')[1] || '').length;
-    const stepDecCount = (step.toString().split('.')[1] || '').length;
-    const decCount = valDecCount > stepDecCount ? valDecCount : stepDecCount;
-    const valInt = parseInt(val.toFixed(decCount).replace('.', ''));
-    const stepInt = parseInt(step.toFixed(decCount).replace('.', ''));
-
-    return (valInt % stepInt) / Math.pow(10, decCount);
-}
-
 class TimeFrame {
     constructor(seconds) {
         if (seconds instanceof BigNumber) {
@@ -115,11 +99,11 @@ class TimeFrame {
         const results = [];
         
         transforms.forEach(t => {
-            const div = Math.floor(val / t[1]);
-            if (div > 0) {
+            const div = val.dividedToIntegerBy(t[1]);
+            if (div.toNumber() > 0) {
                 results.push(div + ' ' + t[0]);
             }
-            val = floatSafeRemainder(val, t[1]);
+            val = val.modulo(t[1]);
         });
 
         return results.join(', ');
