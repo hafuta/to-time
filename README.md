@@ -84,10 +84,13 @@ toTime.fromYears(4).addWeeks(4).days(); //1488
 
 * If tests are passing and eslint doesn't return any error -> Create pull request
 
-#### To Do
+## To Do
 - [ ]  Add support for decimal numbers in textual representation
 - [ ]  Add Karma for testing in browser environment (Currently testing server side using Mocha)
 - [ ]  Add more tests
 - [ ]  Improve documentation
 
+
+## License
+MIT
 
