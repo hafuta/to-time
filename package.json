@@ -7,21 +7,29 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha ./test",
-    "istanbul": "./node_modules/.bin/istanbul cover _mocha",
-    "lint": "npm run lint-lib && npm run lint-server-test",
-    "lint-lib": "eslint -c .eslintrc.json --ignore-path ./.eslintignore .",
-    "lint-server-test": "eslint -c ./test/.eslintrc.json --ignore-path ./test/.eslintignore ./test"
+    "test": "./node_modules/.bin/mocha ./test",
+    "coverage": "./node_modules/.bin/istanbul cover _mocha",
+    "lint": "eslint -c .eslintrc.json --ignore-path ./.eslintignore .",
+    "build": "./node_modules/.bin/browserify --standalone to-time -t [ babelify --presets [ es2015 ] ] src/index.js -o lib/to-time.js",
+    "build-min": "./node_modules/.bin/browserify --standalone to-time -t [ babelify --presets [ es2015 ] ] src/index.js | ./node_modules/.bin/uglifyjs --compress --screw-ie8 > lib/to-time.min.js"
   },
   "author": "Matan Hafuta",
   "license": "MIT",
   "devDependencies": {
-    "istanbul": "^0.4.4",
+    "browserify": "^13.0.1",
+    "babel-core": "^6.10.4",
+    "mocha": "^2.5.3",
     "chai": "^3.5.0",
-    "mocha": "^2.5.3"
+    "istanbul": "^0.4.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babelify": "^7.3.0",
+    "uglify-js": "^2.7.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/hafuta/to-time.git"
+  },
+  "dependencies": {
+    "bignumber.js": "^2.4.0"
   }
 }

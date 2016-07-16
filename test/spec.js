@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const toTime = require('../lib');
+const toTime = require('../src');
 
 describe('Invoking toTime', () => {
 
@@ -7,7 +7,9 @@ describe('Invoking toTime', () => {
         it('Should be function', () => {
             expect(toTime).to.be.a('function');
         });
+    });
 
+    describe('Factory methods defined', () => {
         const methods = ['fromMilliseconds', 'fromSeconds', 'fromMinutes', 'fromHours', 'fromDays', 'fromWeeks', 'fromYears'];
 
         methods.forEach((m) => {
@@ -18,53 +20,48 @@ describe('Invoking toTime', () => {
         });
     });
 
-    describe('Failing values', () => {
+    describe('Failing string values', () => {
+        const invalidFormats = [
+            '30yy', '30 yearss', '5month', '5mon', '2500sec',
+            '50', '3oyears', '30 minotes', '9wix', '10 months',
+            '30years 5monthlys'
+        ];
 
+        invalidFormats.forEach((f) => {
+            it(`Invoking toTime('${f}') should throw error`, () => {
+                expect(toTime.bind(this, f)).to.throw(Error);
+            });
+        });
+    });
+
+    describe('constructor', () => {
+        const invalidFormats = [
+            '30years 2days@', '3oyears 5months', '7days 5weekss', '1y 2weeks 7 d 50minute; 9second',
+            '25years - 7 months - 90 za'
+        ];
+
+        invalidFormats.forEach((f) => {
+            it(`Invoking toTime('${f}') should throw error`, () => {
+                expect(toTime.bind(this, f)).to.throw(Error);
+            });
+        });
+    });
+
+    describe('constructor - invalid values', () => {
         const invalidValues = [
             5, 5000, {},
             new Function(), new Object(),
             '', 5.5, 5.600000, true, false, new Boolean(false), []
         ];
 
-        it('Should fail', () => {
-            invalidValues.forEach((f) => {
+        invalidValues.forEach((f) => {
+            it(`Invoking toTime(${f}) should throw error`, () => {
                 expect(toTime.bind(this, f)).to.throw(Error);
             });
         });
-
     });
 
-    describe('Failing simple formats', () => {
-
-        const invalidFormats = [
-            '30yy', '30 yearss', '5month', '5mon', '2500sec',
-            '50', '3oyears', '30 minotes', '9wix', '10 months'
-        ];
-        it('Should fail', () => {
-            invalidFormats.forEach((f) => {
-                expect(toTime.bind(this, f)).to.throw(Error);
-            });
-        });
-
-    });
-
-    describe('Failing complex formats', () => {
-
-        const invalidFormats = [
-            '30years 2days@', '3oyears 5months', '7days 5weekss', '1y 2weeks 7 d 50minute; 9second',
-            '25years - 7 months - 90 za'
-        ];
-
-        it('Should fail', () => {
-            invalidFormats.forEach((f) => {
-                expect(toTime.bind(this, f)).to.throw(Error);
-            });
-        });
-
-    });
-
-    describe('Should equal - simple values - seconds', () => {
-
+    describe('prototype.seconds', () => {
         const SIMPLE = [{
             value: 86400,
             terms: [
@@ -75,38 +72,38 @@ describe('Invoking toTime', () => {
         }];
 
         SIMPLE.forEach((s) => {
-            it(`Should equal ${s.value}`, () => {
-                s.terms.forEach((t) => {
+
+            s.terms.forEach((t) => {
+                it(`${t} converted to seconds should be equal to ${s.value}`, () => {
                     expect(toTime(t).seconds()).to.equal(s.value);
                 });
             });
-        });
 
+        });
     });
 
-    describe('Should equal - simple values - minutes', () => {
-
+    describe('prototype.minutes', () => {
         const SIMPLE = [{
             value: 1440,
             terms: [
-                '24h', '24 h', '24hour', '24 hour', '24hours', '24hour',
+                '24 h', '24hour', '24 hour', '24hours', '24hour',
                 '86400s', '86400 s', '86400second', '86400 second', '86400seconds', '86400 seconds',
                 '86400000ms', '86400000 ms', '86400000millisecond', '86400000 millisecond', '86400000milliseconds', '86400000 milliseconds'
             ]
         }];
 
         SIMPLE.forEach((s) => {
-            it(`Should equal ${s.value}`, () => {
-                s.terms.forEach((t) => {
+
+            s.terms.forEach((t) => {
+                it(`${t} converted to minutes should be equal to ${s.value}`, () => {
                     expect(toTime(t).minutes()).to.equal(s.value);
                 });
             });
-        });
 
+        });
     });
 
-    describe('Should equal - simple values - hours', () => {
-
+    describe('prototype.hours', () => {
         const SIMPLE = [{
             value: 5,
             terms: [
@@ -117,17 +114,17 @@ describe('Invoking toTime', () => {
         }];
 
         SIMPLE.forEach((s) => {
-            it(`Should equal ${s.value}`, () => {
-                s.terms.forEach((t) => {
+
+            s.terms.forEach((t) => {
+                it(`${t} converted to hours should be equal to ${s.value}`, () => {
                     expect(toTime(t).hours()).to.equal(s.value);
                 });
             });
-        });
 
+        });
     });
 
     describe('Should equal - simple values - days', () => {
-
         const SIMPLE = [{
             value: 2,
             terms: [
@@ -139,17 +136,17 @@ describe('Invoking toTime', () => {
         }];
 
         SIMPLE.forEach((s) => {
-            it(`Should equal ${s.value}`, () => {
-                s.terms.forEach((t) => {
+
+            s.terms.forEach((t) => {
+                it(`${t} converted to days should be equal to ${s.value}`, () => {
                     expect(toTime(t).days()).to.equal(s.value);
                 });
             });
-        });
 
+        });
     });
 
     describe('Should equal - simple values - weeks', () => {
-
         const SIMPLE = [{
             value: 1,
             terms: [
@@ -160,16 +157,37 @@ describe('Invoking toTime', () => {
         }];
 
         SIMPLE.forEach((s) => {
-            it(`Should equal ${s.value}`, () => {
-                s.terms.forEach((t) => {
+
+            s.terms.forEach((t) => {
+                it(`${t} convereted to weeks should be equal to ${s.value}`, () => {
                     expect(toTime(t).weeks()).to.equal(s.value);
                 });
             });
         });
-
     });
 
-    describe('add functions', () => {
+    describe('Decimal values', () => {
+        const tests = [
+            //original value, to, should equal
+            ['1.50d', 'minutes', 2160],
+            ['1.555y, 2 weeks', 'days', 581.575],
+            ['1.5y', 'hours', 13140],
+            ['2 day', 'minutes', 2880],
+            ['1 year, 365d, 5 hours', 'minutes', 1051500],
+            ['9.5 years, 5.25weeks 3d, 5hours ,90 minutes, 5.5 second', 'seconds', 303049805.5],
+            ['955.555m', 'seconds', 57333.3],
+            ['955.555m', 'ms', 57333300]
+        ];
+
+        tests.forEach((t) => {
+            it(`${t[0]} converted to ${t[1]} should be equal to ${t[2]}`, () => {
+                const toTimeInvoke = toTime(t[0]);
+                expect(toTimeInvoke[t[1]]()).to.equal(t[2]);
+            });
+        });
+    });
+
+    describe('Appenders', () => {
         it('Should equal to total of 1 minute', () => {
             expect(toTime('30s').addSeconds(30).minutes()).to.equal(1);
         });
@@ -183,18 +201,26 @@ describe('Invoking toTime', () => {
         });
     });
 
-    describe('Constructors', () => {
-        expect(toTime.fromMilliseconds(30000).minutes()).to.equal(0.5);
-        expect(toTime.fromSeconds(86400).days()).to.equal(1);
-        expect(toTime.fromWeeks(4).addWeeks(4).weeks()).to.equal(8);
-        expect(toTime.fromYears(2).addYears(1).addWeeks(4).addDays(365).minutes()).to.equal(40320 + 2102400);
-        expect(toTime.fromHours(5).addHours(10).addMilliseconds(5).milliseconds()).to.equal(54000005);
-        expect(toTime.fromMinutes(15).addHours(2).seconds()).to.equal(8100);
-        expect(toTime.fromDays(10).addDays(2).addHours(24).days()).to.equal(13);
+    describe('Factories', () => {
+        it('Should equal', () => {
+            expect(toTime.fromMilliseconds(30000).minutes()).to.equal(0.5);
+            expect(toTime.fromSeconds(86400).days()).to.equal(1);
+            expect(toTime.fromWeeks(4).addWeeks(4).weeks()).to.equal(8);
+            expect(toTime.fromYears(2).addYears(1).addWeeks(4).addDays(365).minutes()).to.equal(40320 + 2102400);
+            expect(toTime.fromHours(5).addHours(10).addMilliseconds(5).milliseconds()).to.equal(54000005);
+            expect(toTime.fromMinutes(15).addHours(2).seconds()).to.equal(8100);
+            expect(toTime.fromDays(10).addDays(2).addHours(24).days()).to.equal(13);
+        });
     });
 
     describe('humanize', () => {
-        expect(toTime.fromHours(50).humanize()).to.equal('2 Days, 2 Hours');
+        it('Should transform object into human readable stirng', () => {
+            expect(toTime.fromHours(50).humanize()).to.equal('2 Days, 2 Hours');
+        });
+
+        it('humanize() and toString() should return the same output', () => {
+            expect(toTime.fromHours(50).humanize()).to.equal(toTime.fromHours(50).toString());
+        });
     });
 
 });

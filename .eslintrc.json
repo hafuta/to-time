@@ -3,13 +3,13 @@
         "browser": true,
         "commonjs": true,
         "amd": true,
-        "es6": false,
+        "es6": true,
         "mocha": true,
-        "mongo": false,
-        "node": false
+        "node": true,
+        "mongo": false
     },
     "parserOptions": {
-        "ecmaVersion": 5,
+        "ecmaVersion": 6,
         "sourceType": "script"
     },
     "extends": "eslint:recommended",
@@ -71,7 +71,11 @@
 
         "no-nested-ternary": "error",
 
-        "no-sparse-arrays": "error"
+        "no-sparse-arrays": "error",
+
+        "no-var": "error",
+
+        "prefer-arrow-callback": "error"
 
     }
 }
