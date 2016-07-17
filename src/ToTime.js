@@ -5,16 +5,16 @@ const BigNumber = require('bignumber.js');
 const TimeFrame = require('./TimeFrame');
 const constants = require('./constants');
 
-const toTime = (text) => {
-    const units = {};
-    units.y = units.year = units.years = constants.SECONDS_IN_YEAR;
-    units.w = units.week = units.weeks = constants.SECONDS_IN_WEEK;
-    units.d = units.day = units.days = constants.SECONDS_IN_DAY;
-    units.h = units.hour = units.hours = constants.SECONDS_IN_HOUR;
-    units.m = units.minute = units.minutes = constants.SECONDS_IN_MINUTE;
-    units.s = units.second = units.seconds = constants.ONE_SECOND;
-    units.ms = units.millisecond = units.milliseconds = constants.SECONDS_IN_MILLISECOND;
+const units = {};
+units.y = units.year = units.years = constants.SECONDS_IN_YEAR;
+units.w = units.week = units.weeks = constants.SECONDS_IN_WEEK;
+units.d = units.day = units.days = constants.SECONDS_IN_DAY;
+units.h = units.hour = units.hours = constants.SECONDS_IN_HOUR;
+units.m = units.minute = units.minutes = constants.SECONDS_IN_MINUTE;
+units.s = units.second = units.seconds = constants.ONE_SECOND;
+units.ms = units.millisecond = units.milliseconds = constants.SECONDS_IN_MILLISECOND;
 
+const toTime = (text) => {
     /**
      * Matching the tested string from start to end - /^ .. $/
      * Required - starting with at least one digit - \d+
