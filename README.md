@@ -1,7 +1,7 @@
 # to-time
 [![Build Status](https://travis-ci.org/hafuta/to-time.svg?branch=master)](https://travis-ci.org/hafuta/to-time) [![npm version](https://badge.fury.io/js/to-time.svg)](https://badge.fury.io/js/to-time)
 
-Utility for converting textual time periods to time units
+Utility for converting textual time periods to time units (milliseconds, seconds, minutes, hours, etc..)
 
 In development
 
@@ -15,6 +15,7 @@ npm install --save to-time
 
 To require in the browser:
 ```html
+<!-- access using window.toTime -->
 <script src="node_modules/to-time/lib/to-time.min.js"></script>
 ```
 
@@ -49,7 +50,7 @@ setTimeout(() => {
 }, toTime.addHours(1.5).ms());
 ```
 
-##### Allowed suffixes (all case insensetive)
+##### Allowed suffixes (all case-insensetive)
 
 * Year, Years, Y
 * Week, Weeks, W
@@ -107,4 +108,3 @@ toTime.fromYears(4).addWeeks(4).days(); //1488
 
 ## License
 MIT
-
