@@ -1,8 +1,9 @@
 # to-time
 [![Build Status](https://travis-ci.org/hafuta/to-time.svg?branch=master)](https://travis-ci.org/hafuta/to-time) [![npm version](https://badge.fury.io/js/to-time.svg)](https://badge.fury.io/js/to-time)
 
-Utility for converting textual time periods to time units (milliseconds, seconds, minutes, hours, etc..)
+Utility for converting textual time periods to time units (milliseconds, seconds, minutes, hours, etc..).
 
+######Due to the lack of precision in floating point numbers arithmetic and the need of keeping the results precise the utility is using the [bignumber.js](https://github.com/MikeMcl/bignumber.js/) library for arithmetic operations on numbers.
 
 ## Install
 
@@ -12,6 +13,8 @@ npm install --save to-time
 ```
 
 To require in the browser:
+
+Both files located in _lib_ directory already include the bignumber.js dependency and there is no need to include this module in the browser.
 ```html
 <!-- access using window.toTime -->
 <script src="node_modules/to-time/lib/to-time.min.js"></script>
@@ -35,7 +38,7 @@ toTime('1 Year 365 Days 4 Hours').hours(); //17524
 toTime('1y 365d 4h').hours(); //17524
 ```
 
-Useful for usage in methods such as setInterval and setTimeout which consume the intervals in milliseconds
+Useful for usage in methods such as setInterval and setTimeout which consume the second argument in milliseconds, it is much clearer for someone who will read the code.
 ```javascript
 //Instead of using 43200000 milliseconds (equivalent to 12 hours) we can do the following
 setInterval(() => {
@@ -45,7 +48,7 @@ setInterval(() => {
 //Instead of using 5400000 milliseconds (equivalent to 1.5 hour)
 setTimeout(() => {
   //Do something here
-}, toTime.addHours(1.5).ms());
+}, toTime.fromHours(1.5).ms());
 ```
 
 ##### Allowed suffixes (all case-insensetive)
@@ -59,13 +62,32 @@ setTimeout(() => {
 * Millisecond, Milliseconds, MS
 
 
-##### Initializing using factory methods
+#### Initializing using factory methods
+It is also possible to create a a TimeFrame instance by calling the static factory methods.
+The result will be a TimeFrame object similar to the one that is created by invoking the function with a textual time period.
 ```javascript
 toTime.fromHours(4).addMinutes(30).hours(); //4.5
 toTime.fromYears(4).addWeeks(4).days(); //1488
 ```
+###### Available factory methods
+* fromMilliseconds
+* fromSeconds
+* fromMinutes
+* fromHours
+* fromDays
+* fromWeeks
+* fromYears
 
-##### Appenders methods
+
+#### Appenders methods
+It is possible to add additional units to the TimeFrame object by invoking one of the appender methods on the returned instance:
+
+```javascript
+toTime('0.5 hour').addMinutes(30).seconds(); //3600
+toTime.fromHours(2).addMinutes(30).minutes(); //150
+```
+
+###### Available appenders:
 * addMilliseconds
 * addSeconds
 * addMinutes
@@ -74,7 +96,8 @@ toTime.fromYears(4).addWeeks(4).days(); //1488
 * addWeeks
 * addYears
 
-##### Getters methods
+#### Getters methods
+The getter methods are used to get the value of the TimeFrame object in a specific time unit.
 * milliseconds : Number
 * ms (alias to milliseconds)
 * minutes : Number
@@ -83,6 +106,14 @@ toTime.fromYears(4).addWeeks(4).days(); //1488
 * weeks : Number
 * years : Number
 * humanize : String
+
+#### Converting the TimeFrame object to human readable format
+It is also possible to use to-time in order to convert time units into human readable format.
+Example:
+```javascript
+const frame = toTime.fromMilliseconds(500005050505005);
+frame.humanize(); //15855 Years, 2 Weeks, 6 Days, 11 Hours, 48 Minutes, 25 Seconds, 5 Milliseconds
+```
 
 ## Contributing
 
