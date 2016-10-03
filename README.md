@@ -3,8 +3,6 @@
 
 Utility for converting textual time periods to time units (milliseconds, seconds, minutes, hours, etc..)
 
-In development
-
 
 ## Install
 
