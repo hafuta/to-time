@@ -101,7 +101,9 @@ class TimeFrame {
         transforms.forEach(t => {
             const div = val.dividedToIntegerBy(t[1]);
             if (div.toNumber() > 0) {
-                results.push(div + ' ' + t[0]);
+                //If div value is 1, slice the "s" from the unit name
+                const unit = div > 1 ? t[0] : t[0].slice(0, -1);  
+                results.push(div + ' ' + unit);
             }
             val = val.modulo(t[1]);
         });
