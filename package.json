@@ -35,5 +35,8 @@
   },
   "dependencies": {
     "bignumber.js": "^2.4.0"
+  },
+  "engines": {
+    "node": ">=4.6"
   }
 }

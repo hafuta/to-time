@@ -4,7 +4,6 @@ node_js:
   - "6.9.1"
   - "5.12.0"
   - "4.6.1"
-  - "0.12.17"
 branches:
     only:
         - master
