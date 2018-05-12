@@ -65,7 +65,7 @@ const toTime = (text) => {
 
 //Constructors
 toTime.fromMilliseconds = (milliseconds) => {
-    return new TimeFrame(milliseconds * constants.SECONDS_IN_MILLISECOND);
+    return new TimeFrame(milliseconds / constants.MILLISECONDS_IN_SECOND);
 };
 
 toTime.fromSeconds = (seconds) => {
