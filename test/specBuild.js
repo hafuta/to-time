@@ -203,6 +203,7 @@ describe('Invoking toTime', () => {
 
     describe('Factories', () => {
         it('Should equal', () => {
+            expect(toTime.fromMilliseconds(10789237).seconds()).to.equal(10789.237);
             expect(toTime.fromMilliseconds(30000).minutes()).to.equal(0.5);
             expect(toTime.fromSeconds(86400).days()).to.equal(1);
             expect(toTime.fromWeeks(4).addWeeks(4).weeks()).to.equal(8);
