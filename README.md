@@ -63,7 +63,7 @@ setTimeout(() => {
 
 
 #### Initializing using factory methods
-It is also possible to create a a TimeFrame instance by calling the static factory methods.
+It is also possible to create a TimeFrame instance by calling the static factory methods.
 The result will be a TimeFrame object similar to the one that is created by invoking the function with a textual time period.
 ```javascript
 toTime.fromHours(4).addMinutes(30).hours(); //4.5
