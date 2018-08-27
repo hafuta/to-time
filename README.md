@@ -3,7 +3,7 @@
 
 Utility for converting textual time periods to time units (milliseconds, seconds, minutes, hours, etc..).
 
-######Due to the lack of precision in floating point numbers arithmetic and the need of keeping the results precise the utility is using the [bignumber.js](https://github.com/MikeMcl/bignumber.js/) library for arithmetic operations on numbers.
+**Due to the lack of precision in floating point numbers arithmetic and the need of keeping the results precise the utility is using the [bignumber.js](https://github.com/MikeMcl/bignumber.js/) library for arithmetic operations on numbers.**
 
 ## Install
 
