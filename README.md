@@ -131,9 +131,5 @@ frame.humanize(); //15855 Years, 2 Weeks, 6 Days, 11 Hours, 48 Minutes, 25 Secon
 
 * If tests are passing and eslint doesn't return any error -> Create pull request
 
-## To Do
-- [ ]  Add Karma for testing in browser environment (Currently testing server side using Mocha)
-
-
 ## License
 MIT
