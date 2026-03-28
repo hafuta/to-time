@@ -1,5 +1,5 @@
 # to-time
-[![Build Status](https://travis-ci.org/hafuta/to-time.svg?branch=master)](https://travis-ci.org/hafuta/to-time) [![npm version](https://img.shields.io/npm/v/to-time)](https://www.npmjs.com/package/to-time)
+[![CI](https://img.shields.io/github/actions/workflow/status/hafuta/to-time/ci.yml?branch=master)](https://github.com/hafuta/to-time/actions/workflows/ci.yml) [![npm version](https://img.shields.io/npm/v/to-time)](https://www.npmjs.com/package/to-time)
 
 Utility for converting textual time periods to time units (milliseconds, seconds, minutes, hours, etc..).
 
