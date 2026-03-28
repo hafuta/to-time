@@ -1,6 +1,6 @@
 {
   "name": "to-time",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Utility for converting textual time periods to time units",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
