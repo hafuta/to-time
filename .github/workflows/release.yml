@@ -1,0 +1,152 @@
+# Creates a GitHub Release when a version in package.json is merged to the
+# default branch and that version does not already have a release.
+#
+# How to use:
+# 1. Bump "version" in package.json in your merge request.
+# 2. Merge to master/main. This workflow runs on the resulting push.
+# 3. Release notes are taken from the merged PR description when GitHub links
+#    the push commit to a PR; otherwise from the commit message body; if those
+#    are empty, a one-line placeholder is used.
+#
+# npm publish (trusted publishing / OIDC — recommended):
+# - Configure the package on npmjs.com → Package settings → Trusted publisher:
+#   provider GitHub Actions, repository, and workflow filename MUST match this
+#   file exactly: release.yml (case-sensitive, include .yml).
+# - Publishes only after a *new* GitHub release in this run; version is always
+#   package.json. No NPM_TOKEN or NODE_AUTH_TOKEN for publish — the npm CLI
+#   uses OIDC when id-token: write is set (see npm-publish job).
+# - Requires npm CLI ≥ 11.5.1 and Node ≥ 22.14.0 (see .nvmrc and the npm bump
+#   step below). GitHub-hosted runners only (not self-hosted).
+# - Provenance is generated automatically for trusted publishing; do not rely
+#   on a separate publish token.
+# - If you ever need to install *private* npm deps in CI, use a read-only
+#   NPM_READ_TOKEN on npm ci only; publish still uses OIDC.
+
+name: Release
+
+on:
+  push:
+    branches: [master, main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  github-release:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip release]') }}
+    outputs:
+      released: ${{ steps.result.outputs.released }}
+      version: ${{ steps.pkg.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read version from package.json
+        id: pkg
+        run: |
+          version=$(node -p "require('./package.json').version")
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Skip if release already exists
+        id: exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.pkg.outputs.version }}"
+          TAG="v${VERSION}"
+          if gh release view "${TAG}" --repo "${{ github.repository }}" &>/dev/null; then
+            echo "Release ${TAG} already exists — skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build release notes (PR description or commit message)
+        if: steps.exists.outputs.skip == 'false'
+        id: notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NOTES_FILE="${RUNNER_TEMP}/release-notes.md"
+          PR_JSON=$(gh api \
+            "repos/${{ github.repository }}/commits/${{ github.sha }}/pulls" \
+            --jq 'if length > 0 then {title: .[0].title, body: (.[0].body // "")} else null end')
+          if [ "$PR_JSON" != "null" ] && [ -n "$PR_JSON" ]; then
+            TITLE=$(echo "$PR_JSON" | jq -r '.title')
+            BODY=$(echo "$PR_JSON" | jq -r '.body')
+            if [ -n "$BODY" ] && [ "$BODY" != "null" ]; then
+              printf '%s\n' "$BODY" > "$NOTES_FILE"
+            elif [ -n "$TITLE" ] && [ "$TITLE" != "null" ]; then
+              printf '%s\n' "$TITLE" > "$NOTES_FILE"
+            fi
+          fi
+          if [ ! -s "$NOTES_FILE" ]; then
+            git log -1 --pretty=format:%B > "$NOTES_FILE"
+          fi
+          if [ ! -s "$NOTES_FILE" ] || ! grep -q '[^[:space:]]' "$NOTES_FILE"; then
+            echo "Release v${{ steps.pkg.outputs.version }} — see commit history for details." > "$NOTES_FILE"
+          fi
+          echo "file=${NOTES_FILE}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub release
+        id: gh_release
+        if: steps.exists.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.pkg.outputs.version }}"
+          TAG="v${VERSION}"
+          gh release create "${TAG}" \
+            --repo "${{ github.repository }}" \
+            --title "v${VERSION}" \
+            --notes-file "${{ steps.notes.outputs.file }}"
+
+      - name: Record release outcome
+        id: result
+        if: always()
+        run: |
+          if [ "${{ steps.exists.outputs.skip }}" = "false" ] && [ "${{ steps.gh_release.outcome }}" = "success" ]; then
+            echo "released=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "released=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  npm-publish:
+    needs: github-release
+    runs-on: ubuntu-latest
+    if: needs.github-release.outputs.released == 'true'
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Use npm CLI required for trusted publishing
+        run: npm install -g npm@^11.5.1
+
+      - name: Verify version matches release job
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          EXPECTED="${{ needs.github-release.outputs.version }}"
+          if [ "$PKG_VERSION" != "$EXPECTED" ]; then
+            echo "package.json version ($PKG_VERSION) does not match release job ($EXPECTED)"
+            exit 1
+          fi
+          echo "Publishing to-time@$PKG_VERSION to npm"
+
+      - run: npm ci
+
+      - run: npm test
+
+      - name: Publish to npm (OIDC — no publish token)
+        run: npm publish
