@@ -1,15 +1,33 @@
 {
   "name": "to-time",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Utility for converting textual time periods to time units",
-  "main": "src/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "lib",
+    "types"
+  ],
   "directories": {
     "test": "test"
   },
   "scripts": {
     "pretest": "npm run build",
+    "prepublishOnly": "npm run build",
     "test-source": "mocha ./test/spec",
-    "test-build": "mocha ./test/specBuild",
+    "test-build": "mocha ./test/specBuild.js ./test/specBuildEsm.mjs ./test/specUmd.js",
     "test": "npm run test-source && npm run test-build",
     "coverage": "nyc npm run test-source",
     "lint": "eslint .",

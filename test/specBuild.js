@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const toTime = require('../lib/to-time.min');
+const toTime = require('../dist/index.cjs');
 
 describe('Invoking toTime', () => {
 
