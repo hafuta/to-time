@@ -1,6 +1,17 @@
 # to-time
 [![Build Status](https://travis-ci.org/hafuta/to-time.svg?branch=master)](https://travis-ci.org/hafuta/to-time) [![npm version](https://badge.fury.io/js/to-time.svg)](https://badge.fury.io/js/to-time)
 
+## Changelog
+
+### Unreleased
+
+- **Tooling:** Replaced Browserify, Babel 6, Istanbul, and Uglify with **Rollup** (UMD bundles in `lib/`), **Mocha 11**, and **nyc** for coverage.
+- **Dependencies:** Upgraded **bignumber.js** to v9; removed unused **chai-as-promised**; switched from Yarn to **npm** with a committed **package-lock.json**.
+- **Security:** Resolved transitive issues (e.g. **minimist**, **serialize-javascript**, **diff**, **elliptic** chain from old Browserify) via upgrades and **npm overrides** where upstream had not caught up yet.
+- **Lint:** **ESLint 9** with flat config (`eslint.config.mjs`), **@eslint/js** recommended rules, and **@stylistic/eslint-plugin** for formatting rules that moved out of core ESLint.
+- **CI:** GitHub Actions workflow runs install, lint, tests, coverage, and `npm audit` (see `.github/workflows/ci.yml`).
+- **Node:** `package.json` **engines** require **Node.js ≥ 20.19**; `.nvmrc` pins **22** for local development and GitHub Actions.
+
 Utility for converting textual time periods to time units (milliseconds, seconds, minutes, hours, etc..).
 
 **Due to the lack of precision in floating point numbers arithmetic and the need of keeping the results precise the utility is using the [bignumber.js](https://github.com/MikeMcl/bignumber.js/) library for arithmetic operations on numbers.**

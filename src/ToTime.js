@@ -51,7 +51,7 @@ const toTime = (text) => {
             return [parseFloat(v.substr(0, numeric.length)), v.substr(numeric.length).toLowerCase()];
         })
         .map(v => {
-            if ( !units.hasOwnProperty(v[1]) ) {
+            if ( !Object.hasOwn(units, v[1]) ) {
                 throw new Error(`Invalid unit: ${v[1]}`);
             }
             return new BigNumber(v[0]).times(units[v[1]]);

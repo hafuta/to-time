@@ -223,7 +223,7 @@ describe('Invoking toTime', () => {
             expect(toTime.fromHours(24).humanize()).to.equal('1 Day');
         });
 
-        it('366 days and 2 hour should equal `1 Years, 1 Days, 2 Hours', () => {
+        it('366 days and 2 hour should equal `1 Year, 1 Day, 2 Hours`', () => {
             expect(toTime.fromDays(366).addHours(2).humanize()).to.equal('1 Year, 1 Day, 2 Hours');
         });
 
