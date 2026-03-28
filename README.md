@@ -7,23 +7,48 @@ Utility for converting textual time periods to time units (milliseconds, seconds
 
 ## Install
 
-First install the package and save it to package.json using npm:
 ```sh
-npm install --save to-time
+npm install to-time
 ```
 
-To require in the browser:
+**Node.js 20.19+** is required (see `engines` in `package.json`).
 
-Both files located in _lib_ directory already include the bignumber.js dependency and there is no need to include this module in the browser.
-```html
-<!-- access using window.toTime -->
-<script src="node_modules/to-time/lib/to-time.min.js"></script>
+## Importing
+
+The package is built as **dual ESM / CommonJS** and defines an [`exports`](https://nodejs.org/api/packages.html#exports) map in `package.json`. Use the package name `to-time` only—tools resolve it to `dist/index.mjs` (ESM) or `dist/index.cjs` (CJS). TypeScript types are exposed through the same entry.
+
+### Node.js and bundlers (ESM)
+
+```javascript
+import toTime from 'to-time';
 ```
 
-To require when using NodeJS:
-```node
+Use this in projects with `"type": "module"` in `package.json`, in `.mjs` files, or when your bundler targets ESM.
+
+### Node.js and bundlers (CommonJS)
+
+```javascript
 const toTime = require('to-time');
 ```
+
+### TypeScript
+
+```typescript
+import toTime from 'to-time';
+```
+
+The same import works with `moduleResolution` set to `node16`, `nodenext`, or `bundler` (recommended for modern tooling).
+
+### Browser (UMD)
+
+For a plain script tag without a bundler, use the UMD build under `lib/`. **BigNumber.js is bundled** into these files; you do not need a separate script for it.
+
+```html
+<script src="node_modules/to-time/lib/to-time.min.js"></script>
+<!-- exposes global: window.toTime -->
+```
+
+A non-minified file is also published: `node_modules/to-time/lib/to-time.js`.
 
 ## Usage
 Converting from textual time period to time units
