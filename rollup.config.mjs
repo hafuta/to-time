@@ -4,17 +4,36 @@ import terser from '@rollup/plugin-terser';
 
 const umd = { format: 'umd', name: 'toTime' };
 
-const plugins = [resolve(), commonjs()];
+const dualPackagePlugins = [resolve(), commonjs()];
+const umdPlugins = [resolve(), commonjs()];
 
 export default [
     {
         input: 'src/index.js',
+        output: [
+            {
+                file: 'dist/index.mjs',
+                format: 'es',
+                sourcemap: true
+            },
+            {
+                file: 'dist/index.cjs',
+                format: 'cjs',
+                exports: 'auto',
+                sourcemap: true
+            }
+        ],
+        external: ['bignumber.js'],
+        plugins: dualPackagePlugins
+    },
+    {
+        input: 'src/index.js',
         output: { ...umd, file: 'lib/to-time.js' },
-        plugins: [...plugins]
+        plugins: [...umdPlugins]
     },
     {
         input: 'src/index.js',
         output: { ...umd, file: 'lib/to-time.min.js' },
-        plugins: [...plugins, terser()]
+        plugins: [...umdPlugins, terser()]
     }
 ];

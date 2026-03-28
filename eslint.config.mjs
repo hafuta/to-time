@@ -13,7 +13,7 @@ const stylisticRules = {
 
 export default [
     {
-        ignores: ['coverage/**', 'lib/**', 'node_modules/**', 'test/**']
+        ignores: ['coverage/**', 'dist/**', 'lib/**', 'node_modules/**', 'test/**']
     },
     js.configs.recommended,
     {
