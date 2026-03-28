@@ -43,7 +43,7 @@ jobs:
       released: ${{ steps.result.outputs.released }}
       version: ${{ steps.pkg.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Read version from package.json
         id: pkg
@@ -123,9 +123,9 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
           cache: npm
